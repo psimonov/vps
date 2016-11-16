@@ -1,0 +1,17 @@
+{domain} {
+    root ./{domain}/web
+    gzip
+    header / -Server
+    fastcgi / unix:/var/run/php/php7.0-fpm.sock {
+        ext php
+        index index.php
+    }
+    rewrite {
+        if {file} ends_with .php
+        if {path} not_match ^/index\.php(/|$)
+        status 404
+    }
+    rewrite {
+        to {path} /index.php?{query}
+    }
+}
